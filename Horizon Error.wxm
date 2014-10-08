@@ -1,0 +1,36 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 13.04.2 ] */
+
+/* [wxMaxima: input   start ] */
+load(vect);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+a:30*3.14/180;
+b:30*3.14/180;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+Zp:[0, -sin(b), cos(b)];
+Xp:[sqrt(1 - sin(a)^2 - (tan(b)*sin(a))^2), sin(a), tan(b)*sin(a) ];
+Yp:express(Zp~Xp);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+M:matrix(Xp, Yp, Zp);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+determinant(M);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+trigreduce(trigsimp(sqrt(-sin(a)^2*tan(b)^2-sin(a)^2+1)));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+trigreduce(sqrt(-sin(a)^2*tan(b)^2-sin(a)^2+1));
+/* [wxMaxima: input   end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$
