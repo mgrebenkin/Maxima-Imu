@@ -32,5 +32,17 @@ trigreduce(trigsimp(sqrt(-sin(a)^2*tan(b)^2-sin(a)^2+1)));
 trigreduce(sqrt(-sin(a)^2*tan(b)^2-sin(a)^2+1));
 /* [wxMaxima: input   end   ] */
 
+/* [wxMaxima: input   start ] */
+ratsimp(sqrt(-sin(a)^2*tan(b)^2-sin(a)^2+1));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+factor(-sin(a)^2*tan(b)^2-sin(a)^2+1);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+trigsimp(-sin(a)^2*tan(b)^2-sin(a)^2+1);
+/* [wxMaxima: input   end   ] */
+
 /* Maxima can't load/batch files which end with a comment! */
 "Created with wxMaxima"$

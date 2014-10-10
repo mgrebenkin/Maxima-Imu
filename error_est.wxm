@@ -1,5 +1,5 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
-/* [ Created with wxMaxima version 11.08.0 ] */
+/* [ Created with wxMaxima version 13.04.2 ] */
 
 /* [wxMaxima: input   start ] */
 load(vect);
@@ -36,13 +36,19 @@ Moz(ang):= M([0, 0, 1], ang);
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
+dX:30*3.14/180;
+dZ:30*3.14/180;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
 M30:matrix(
-[sqrt(1 - (sin(dX)^2/cos(dZ)^2)), sin(dX), sin(dX)*tg(dZ)],
-[-sin(dX)*sin(dZ)*tg(dZ) - sin(dX)*cos(dZ), 
+[sqrt(1 - (sin(dX)^2/cos(dZ)^2)), sin(dX), sin(dX)*tan(dZ)],
+[-sin(dX)*sin(dZ)*tan(dZ) - sin(dX)*cos(dZ), 
     sqrt(1 - (sin(dX)^2/cos(dZ)^2))*cos(dZ), 
     sqrt(1 - (sin(dX)^2/cos(dZ)^2))*sin(dZ)],
 [0, -sin(dZ), cos(dZ)]
 );
+determinant(M30);
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
@@ -73,7 +79,6 @@ sqrt(1 - (sin(ps3) - dsPs3)^2)*sqrt(1 - (cos(th3) - dcTh3)^2)
 ];
 
 E:matrix(E1, E2, E3);
-
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
@@ -83,6 +88,10 @@ D = D0 + K.E.(Mp.Ms.M30).(Mea.(-g));
 /* [wxMaxima: input   start ] */
 /* I */
 D = D0 + K.E.(Mp.Ms.M30).(M(lambda, EarthRot*t).(-g));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+kill(dX); kill(dZ);
 /* [wxMaxima: input   end   ] */
 
 /* Maxima can't load/batch files which end with a comment! */
