@@ -1,5 +1,5 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
-/* [ Created with wxMaxima version 13.04.2 ] */
+/* [ Created with wxMaxima version 11.08.0 ] */
 
 /* [wxMaxima: input   start ] */
 load(vect);
@@ -14,13 +14,14 @@ M(ax, ang):= matrix(
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
-lamda: [cos(lat), sin(lat), 0];
+_LAT: float(55 + 38/60 + 45/3600);
+_LAMBDA: [cos(_LAT), sin(_LAT), 0];
 g: [0, -9.81, 0];
-ang:EarthRot*t;
-/* [wxMaxima: input   end   ] */
-
-/* [wxMaxima: input   start ] */
-kill(all);
+_EARTHROT: 7.2921E-5;
+Tc: 0.032768;
+_XDRIFT: (4.1177E-6)/(32*Tc); _YDRIFT: (4.1177E-6)/(32*Tc); _ZDRIFT: (4.1177E-6)/(32*Tc);
+_DRIFT_VEL: sqrt((_XDRIFT)^2 + (_YDRIFT)^2 + (_ZDRIFT)^2);
+_DRIFT_AX: [_XDRIFT, _YDRIFT, _ZDRIFT]/_DRIFT_VEL;
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
@@ -36,19 +37,37 @@ Moz(ang):= M([0, 0, 1], ang);
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
-dX:30*3.14/180;
-dZ:30*3.14/180;
+_ANGX: 0; _ANGZ: 0;
+dX:0; dZ:0;
+M30:matrix(
+[sqrt(1 - (sin(_ANGX - dX)^2/cos(_ANGZ- dZ)^2)), sin(_ANGX - dX), sin(_ANGX - dX)*tan(_ANGZ- dZ)],
+[-sin(_ANGX - dX)*sin(_ANGZ- dZ)*tan(_ANGZ- dZ) - sin(_ANGX - dX)*cos(_ANGZ- dZ), 
+    sqrt(1 - (sin(_ANGX - dX)^2/cos(_ANGZ- dZ)^2))*cos(_ANGZ- dZ), 
+    sqrt(1 - (sin(_ANGX - dX)^2/cos(_ANGZ- dZ)^2))*sin(_ANGZ- dZ)],
+[0, -sin(_ANGZ- dZ), cos(_ANGZ- dZ)]
+);
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
-M30:matrix(
-[sqrt(1 - (sin(dX)^2/cos(dZ)^2)), sin(dX), sin(dX)*tan(dZ)],
-[-sin(dX)*sin(dZ)*tan(dZ) - sin(dX)*cos(dZ), 
-    sqrt(1 - (sin(dX)^2/cos(dZ)^2))*cos(dZ), 
-    sqrt(1 - (sin(dX)^2/cos(dZ)^2))*sin(dZ)],
-[0, -sin(dZ), cos(dZ)]
-);
-determinant(M30);
+_PS1: 0; _PS3: 0;
+_TH1: 0.5*float(%pi)/180; _TH3: 0.5*float(%pi)/180; 
+
+
+E1: [
+sqrt(1 - (sin(_TH1) - dsTh1)^2)*sqrt(1 - (sin(_PS1) - dsPs1)^2),
+sin(_TH1) - dsTh1,
+sqrt(1 - (sin(_TH1) - dsTh1)^2)*(sin(_PS1)-dsPs1)
+];
+
+E2: [dsNu1, sqrt(1 - dsNu1^2 - dsNu2^2), -dsNu2];
+
+E3: [
+sqrt(1 - (sin(_TH3) - dsTh3)^2)*(cos(_PS3) - dcPs3),
+sin(_TH3) - dsTh3,
+sqrt(1 - (sin(_PS3) - dsPs3)^2)*sqrt(1 - (cos(_TH3) - dcTh3)^2)
+];
+
+E:matrix(E1, E2, E3);
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
@@ -60,38 +79,14 @@ K:matrix(
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
-ps1: 0; ps3: 0;
-th1: 0.5*pi/180; th3: 0.5*pi/180; 
-
-
-E1: [
-sqrt(1 - (sin(th1) - dsTh1)^2)*sqrt(1 - (sin(ps1) - dsPs1)^2),
-sin(Th1) - dsTh1,
-sqrt(1 - (sin(th1) - dsTh1)^2)*(sin(ps1)-dsPs1)
-];
-
-E2: [dsNu1, sqrt(1 - dsNu1^2 - dsNu2^2), -dsNu2];
-
-E3: [
-sqrt(1 - (sin(th3) - dsTh3)^2)*(cos(ps3) - dcPs3),
-sin(th3) - dsTh3,
-sqrt(1 - (sin(ps3) - dsPs3)^2)*sqrt(1 - (cos(th3) - dcTh3)^2)
-];
-
-E:matrix(E1, E2, E3);
-/* [wxMaxima: input   end   ] */
-
-/* [wxMaxima: input   start ] */
-D = D0 + K.E.(Mp.Ms.M30).(Mea.(-g));
+D0: matrix([dSh1],[dSh2], [dSh3]);
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
 /* I */
-D = D0 + K.E.(Mp.Ms.M30).(M(lambda, EarthRot*t).(-g));
-/* [wxMaxima: input   end   ] */
-
-/* [wxMaxima: input   start ] */
-kill(dX); kill(dZ);
+N: 27466;
+t: Tc*N;
+D = D0 + K.E.(M(_DRIFT_AX, _DRIFT_VEL*t).M30).(M(_LAMBDA, _EARTHROT*t).(-g));
 /* [wxMaxima: input   end   ] */
 
 /* Maxima can't load/batch files which end with a comment! */
