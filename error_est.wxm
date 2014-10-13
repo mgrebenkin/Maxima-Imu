@@ -1,5 +1,5 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
-/* [ Created with wxMaxima version 11.08.0 ] */
+/* [ Created with wxMaxima version 13.04.2 ] */
 
 /* [wxMaxima: input   start ] */
 load(vect);
@@ -49,8 +49,12 @@ M30:matrix(
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
+x:[dSh1, dSh2, dSh3 ,dK1, dK2, dK3, dsNu1, dsNu2, dsTh1, dcTh3, dsPs1, dsPc3];
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
 _PS1: 0; _PS3: 0;
-_TH1: 0.5*float(%pi)/180; _TH3: 0.5*float(%pi)/180; 
+/*_TH1: 0.5*float(%pi)/180; _TH3: 0.5*float(%pi)/180;*/ 
 
 
 E1: [
@@ -72,9 +76,9 @@ E:matrix(E1, E2, E3);
 
 /* [wxMaxima: input   start ] */
 K:matrix(
-[1 + dKx, 0, 0],
-[0, 1 + dKy, 0],
-[0, 0, 1 + dKz]
+[1 + dK1, 0, 0],
+[0, 1 + dK2, 0],
+[0, 0, 1 + dK3]
 );
 /* [wxMaxima: input   end   ] */
 
@@ -86,7 +90,11 @@ D0: matrix([dSh1],[dSh2], [dSh3]);
 /* I */
 N: 27466;
 t: Tc*N;
-D = D0 + K.E.(M(_DRIFT_AX, _DRIFT_VEL*t).M30).(M(_LAMBDA, _EARTHROT*t).(-g));
+D:D0 + K.E.(M(_DRIFT_AX, _DRIFT_VEL*t).M30).(M(_LAMBDA, _EARTHROT*t).(-g));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+expand(D);
 /* [wxMaxima: input   end   ] */
 
 /* Maxima can't load/batch files which end with a comment! */
