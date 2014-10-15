@@ -1,5 +1,5 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
-/* [ Created with wxMaxima version 13.04.2 ] */
+/* [ Created with wxMaxima version 11.08.0 ] */
 
 /* [wxMaxima: input   start ] */
 load(vect);
@@ -37,38 +37,31 @@ Moz(ang):= M([0, 0, 1], ang);
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
-_ANGX: 0; _ANGZ: 0;
-dX:0; dZ:0;
 M30:matrix(
-[sqrt(1 - (sin(_ANGX - dX)^2/cos(_ANGZ- dZ)^2)), sin(_ANGX - dX), sin(_ANGX - dX)*tan(_ANGZ- dZ)],
-[-sin(_ANGX - dX)*sin(_ANGZ- dZ)*tan(_ANGZ- dZ) - sin(_ANGX - dX)*cos(_ANGZ- dZ), 
-    sqrt(1 - (sin(_ANGX - dX)^2/cos(_ANGZ- dZ)^2))*cos(_ANGZ- dZ), 
-    sqrt(1 - (sin(_ANGX - dX)^2/cos(_ANGZ- dZ)^2))*sin(_ANGZ- dZ)],
-[0, -sin(_ANGZ- dZ), cos(_ANGZ- dZ)]
+[sqrt(1 - (sin(_ANGX)^2/cos(_ANGZ)^2)), sin(_ANGX), sin(_ANGX)*tan(_ANGZ)],
+[-sin(_ANGX)*sin(_ANGZ)*tan(_ANGZ) - sin(_ANGX)*cos(_ANGZ), 
+    sqrt(1 - (sin(_ANGX )^2/cos(_ANGZ)^2))*cos(_ANGZ), 
+    sqrt(1 - (sin(_ANGX )^2/cos(_ANGZ)^2))*sin(_ANGZ)],
+[0, -sin(_ANGZ), cos(_ANGZ)]
 );
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
-x:[dSh1, dSh2, dSh3 ,dK1, dK2, dK3, dsNu1, dsNu2, dsTh1, dcTh3, dsPs1, dsPc3];
-/* [wxMaxima: input   end   ] */
-
-/* [wxMaxima: input   start ] */
-_PS1: 0; _PS3: 0;
-/*_TH1: 0.5*float(%pi)/180; _TH3: 0.5*float(%pi)/180;*/ 
-
+/*_TH1: 0.5*float(%pi)/180; _PS1:-0.5*float(%pi)/180;*/
+/*_TH3: 0.5*float(%pi)/180; _PS3:-89.5*float(%pi)/180;*/
 
 E1: [
-sqrt(1 - (sin(_TH1) - dsTh1)^2)*sqrt(1 - (sin(_PS1) - dsPs1)^2),
-sin(_TH1) - dsTh1,
-sqrt(1 - (sin(_TH1) - dsTh1)^2)*(sin(_PS1)-dsPs1)
+sqrt(1 - (sin(_TH1))^2)*sqrt(1 - (sin(_PS1))^2),
+sin(_TH1),
+-sqrt(1 - (sin(_TH1) )^2)*(sin(_PS1))
 ];
 
-E2: [dsNu1, sqrt(1 - dsNu1^2 - dsNu2^2), -dsNu2];
+E2: [sin(NU1), sqrt(1 - sin(NU1)^2 - sin(NU2)^2), -sin(NU2)];
 
 E3: [
-sqrt(1 - (sin(_TH3) - dsTh3)^2)*(cos(_PS3) - dcPs3),
-sin(_TH3) - dsTh3,
-sqrt(1 - (sin(_PS3) - dsPs3)^2)*sqrt(1 - (cos(_TH3) - dcTh3)^2)
+sqrt(1 - (sin(_TH3) )^2)*(cos(_PS3)),
+sin(_TH3) ,
+sqrt(1 - (cos(_PS3))^2)*sqrt(1 - (sin(_TH3) )^2)
 ];
 
 E:matrix(E1, E2, E3);
@@ -76,9 +69,9 @@ E:matrix(E1, E2, E3);
 
 /* [wxMaxima: input   start ] */
 K:matrix(
-[1 + dK1, 0, 0],
-[0, 1 + dK2, 0],
-[0, 0, 1 + dK3]
+[K1, 0, 0],
+[0, K2, 0],
+[0, 0, K3]
 );
 /* [wxMaxima: input   end   ] */
 
@@ -94,7 +87,47 @@ D:D0 + K.E.(M(_DRIFT_AX, _DRIFT_VEL*t).M30).(M(_LAMBDA, _EARTHROT*t).(-g));
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
-expand(D);
+diff(D);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+De:expand(D);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+Ddel:diff(De)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+Dsub:subst([
+del(_TH1) = dTh1, del(_TH3) = dTh3, 
+del(_PS1) = dPs1, del(_PS3) = dPs3,
+del(NU1) = dNu1, del(NU2) = dNu2,
+del(_ANGZ) = dAngZ, del(_ANGX) = dAngX,
+del(K1) = dK1, del(K2) = dK2, del(K3) = dK3,
+del(dSh1) = Sh1, del(dSh2) = Sh2, del(dSh3) = Sh3
+], Ddel)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+Dfull:subst([
+_TH1 = 0.5*float(%pi)/180, _PS1 = 0,
+_TH3 = 0.5*float(%pi)/180, _PS3 = 0,
+NU1 = 0, NU2 = 0,
+_ANGX = 0, _ANGZ = 0,
+K1 = 1, K2 = 1, K3 = 1,
+dSh1 = 0, dSh2 = 0, dSh3 = 0
+], Dsub
+);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+_TH1: 0.5*float(%pi)/180; _PS1:0;
+_TH3: 0.5*float(%pi)/180; _PS3:0;
+NU1: 0; NU2: 0;
+_ANGX:0; _ANGZ:0;
+K1:1; K2:1; K3:1;
+dSh1:0; dSh2:0; dSh3:0;
 /* [wxMaxima: input   end   ] */
 
 /* Maxima can't load/batch files which end with a comment! */
