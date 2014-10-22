@@ -56,7 +56,7 @@ D0: matrix([Shift1],[Shift2], [Shift3]);
 /* [wxMaxima: input   start ] */
 _LAT: float(55 + 38/60 + 45/3600);
 _LAMBDA: [cos(_LAT), sin(_LAT), 0];
-_G: [0, -9.81, 0];
+_G:matrix([0], [-9.81], [0]);
 _EARTHROT: 7.2921E-5;
 _Tc: 0.032768;
 _XDRIFT: (4.1177E-6)/(32*_Tc); _YDRIFT: (4.1177E-6)/(32*_Tc); _ZDRIFT: (4.1177E-6)/(32*_Tc);
@@ -68,52 +68,42 @@ _DRIFT_AX: [_XDRIFT, _YDRIFT, _ZDRIFT]/_DRIFT_VEL;
 /* I */
 N: 27466;
 t: _Tc*N;
-D:expand(D0 + K.E.(M(_DRIFT_AX, _DRIFT_VEL*t).M30).(M(_LAMBDA, _EARTHROT*t).(-_G)));
+D:expand(D0 + K.E.(M(_DRIFT_AX, _DRIFT_VEL*t).M30).(M(_LAMBDA, _EARTHROT*t).(-_G)))$
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
-Dsub:subst([
-del(Theta1) = dTh1, del(Theta3) = dTh3, 
-del(Psi1) = dPs1, del(Psi3) = dPs3,
-del(Nu1) = dNu1, del(Nu2) = dNu2,
-del(AngZ) = dAngZ, del(AngX) = dAngX,
-del(K1) = dK1, del(K2) = dK2, del(K3) = dK3,
-del(Shift1) = Sh1, del(Shift2) = Sh2, del(Shift3) = Sh3
-], Ddel)$
+x: [AngX, AngZ, Theta1, Psi1, Nu1, Nu2, Theta3, Psi3, K1, K2, K3, Shift1, Shift2, Shift3];
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
-x: [AngX, AngZ, Theta1, Theta3, Psi1, Psi3, Nu1, Nu2, K1, K2, K3, Shift1, Shift2, Shift3];
+Dd:matrix([],[],[])$
+
+Dd:addcol(Dd, diff(D, AngX))$
+Dd:addcol(Dd, diff(D, AngZ))$
+Dd:addcol(Dd, diff(D, Theta1))$
+Dd:addcol(Dd, diff(D, Psi1))$
+Dd:addcol(Dd, diff(D, Nu1))$
+Dd:addcol(Dd, diff(D, Nu2))$
+Dd:addcol(Dd, diff(D, Theta3))$
+Dd:addcol(Dd, diff(D, Psi3))$
+Dd:addcol(Dd, diff(D, K1))$
+Dd:addcol(Dd, diff(D, K2))$
+Dd:addcol(Dd, diff(D, K3))$
+Dd:addcol(Dd, diff(D, Shift1))$
+Dd:addcol(Dd, diff(D, Shift2))$
+Dd:addcol(Dd, diff(D, Shift3))$
 /* [wxMaxima: input   end   ] */
-
-/* [wxMaxima: input   start ] */
-Dd:matrix()$
-
-Dd:addcol(Dd,
-diff(D, AngX), diff(D, AngZ),
-diff(D, Theta1), diff(D, Theta3),
-diff(D, Psi1), diff(D, Psi3),
-diff(D, Nu1), diff(D, Nu2),
-diff(D, K1), diff(D, K2), diff(D, K3),
-diff(D, Shift1), diff(D, Shift2), diff(D, Shift3)
-)$;
-/* [wxMaxima: input   end   ] */
-
 
 /* [wxMaxima: input   start ] */
 Dfull:subst([
 Theta1 = 0.5*float(%pi)/180, Psi1 = 0,
-Theta3 = 0.5*float(%pi)/180, Psi3 = 0,
+Theta3 = 0.5*float(%pi)/180, Psi3 = -float(%pi)/2,
 Nu1 = 0, Nu2 = 0,
 AngX = 0, AngZ = 0,
 K1 = 1, K2 = 1, K3 = 1,
 Shift1 = 0, Shift2 = 0, Shift3 = 0
-], Dd[2]
+], Dd
 );
-/* [wxMaxima: input   end   ] */
-
-/* [wxMaxima: input   start ] */
-debugmode(false);
 /* [wxMaxima: input   end   ] */
 
 /* Maxima can't load/batch files which end with a comment! */
