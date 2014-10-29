@@ -54,11 +54,11 @@ D0: matrix([Shift1],[Shift2], [Shift3]);
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
-_LAT: float(55 + 38/60 + 45/3600);
+_LAT: float((55 + 38/60 + 45/3600)*%pi/180);
 _LAMBDA: [cos(_LAT), sin(_LAT), 0];
-_G:matrix([0], [-9.81], [0]);
-_EARTHROT: 7.2921E-5;
-_Tc: 0.032768;
+_G:matrix([0], [-9.8149760962], [0]);
+_EARTHROT: 7.292115003E-5;
+_Tc: 3.2768;
 _XDRIFT: (4.1177E-6)/(32*_Tc); _YDRIFT: (4.1177E-6)/(32*_Tc); _ZDRIFT: (4.1177E-6)/(32*_Tc);
 _DRIFT_VEL: sqrt((_XDRIFT)^2 + (_YDRIFT)^2 + (_ZDRIFT)^2);
 _DRIFT_AX: [_XDRIFT, _YDRIFT, _ZDRIFT]/_DRIFT_VEL;
@@ -66,7 +66,7 @@ _DRIFT_AX: [_XDRIFT, _YDRIFT, _ZDRIFT]/_DRIFT_VEL;
 
 /* [wxMaxima: input   start ] */
 /* I */
-N: 27466;
+N: 275-1;
 t: _Tc*N;
 D:expand(D0 + K.E.(M(_DRIFT_AX, _DRIFT_VEL*t).M30).(M(_LAMBDA, _EARTHROT*t).(-_G)))$
 /* [wxMaxima: input   end   ] */
@@ -99,7 +99,7 @@ Dfull:subst([
 Theta1 = 0.5*float(%pi)/180, Psi1 = 0,
 Theta3 = 0.5*float(%pi)/180, Psi3 = -float(%pi)/2,
 Nu1 = 0, Nu2 = 0,
-AngX = 0, AngZ = 0,
+AngX = float((25/3600)*%pi/180), AngZ = float((25/3600)*%pi/180),
 K1 = 1, K2 = 1, K3 = 1,
 Shift1 = 0, Shift2 = 0, Shift3 = 0
 ], Dd
