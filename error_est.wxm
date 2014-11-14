@@ -99,12 +99,66 @@ Dfull:subst([
 Theta1 = 0.5*float(%pi)/180, Psi1 = 0,
 Theta3 = 0.5*float(%pi)/180, Psi3 = -float(%pi)/2,
 Nu1 = 0, Nu2 = 0,
-AngX = float((25/3600)*%pi/180), AngZ = float((25/3600)*%pi/180),
+AngX = 0, AngZ = 0,
 K1 = 1, K2 = 1, K3 = 1,
 Shift1 = 0, Shift2 = 0, Shift3 = 0
 ], Dd
 );
 /* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+outG: subst([
+Theta1 = 0.5*float(%pi)/180, Psi1 = 0,
+Theta3 = 0.5*float(%pi)/180, Psi3 = -float(%pi)/2,
+Nu1 = 0, Nu2 = 0,
+AngX = 0, AngZ = 0,
+K1 = 1, K2 = 1, K3 = 1,
+Shift1 = 0, Shift2 = 0, Shift3 = 0
+], D
+);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+stringout("dfull.txt", Dfull);
+stringout("outG.txt", outG);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+De:subst([
+Theta1 = (0.5 - 30/3600)*float(%pi)/180, Psi1 = -(30/3600)*float(%pi)/180,
+Theta3 = (0.5 - 30/3600)*float(%pi)/180, Psi3 = (-float(%pi)/2) - ((30/3600)*float(%pi)/180),
+Nu1 = (30/3600)*float(%pi)/180, Nu2 = (30/3600)*float(%pi)/180,
+AngX = float((25/3600)*%pi/180), AngZ = float((25/3600)*%pi/180),
+K1 = 1, K2 = 1, K3 = 1,
+Shift1 = 0, Shift2 = 0, Shift3 = 0
+], D
+);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+Z: De - outG;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+X: subst([
+Theta1 = -(30/3600)*float(%pi)/180, Psi1 = -(30/3600)*float(%pi)/180,
+Theta3 = -(30/3600)*float(%pi)/180, Psi3 = -(30/3600)*float(%pi)/180,
+Nu1 = (30/3600)*float(%pi)/180, Nu2 = (30/3600)*float(%pi)/180,
+AngX = float((25/3600)*%pi/180), AngZ = float((25/3600)*%pi/180),
+K1 = 0, K2 = 0, K3 = 0,
+Shift1 = 0, Shift2 = 0, Shift3 = 0
+], x
+);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+Dfull.X;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+invert(transpose(Dfull).Dfull).transpose(Dfull).Z;
+/* [wxMaxima: input   end   ] */
+
 
 /* Maxima can't load/batch files which end with a comment! */
 "Created with wxMaxima"$
