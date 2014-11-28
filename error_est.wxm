@@ -6,6 +6,10 @@ load(vect);
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
+load(numericalio);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
 M(ax, ang):= matrix(
 [cos(ang) + (1 - cos(ang))*ax[1]**2,  (1 - cos(ang))*ax[1]*ax[2] - sin(ang)*ax[3], (1 - cos(ang))*ax[1]*ax[3] + sin(ang)*ax[2]],
 [(1 - cos(ang))*ax[2]*ax[1] + sin(ang)*ax[3], cos(ang) + (1 - cos(ang))*ax[2]**2, (1 - cos(ang))*ax[2]*ax[3] - sin(ang)*ax[1]],
@@ -85,119 +89,87 @@ _DRIFT_AX: [_XDRIFT, _YDRIFT, _ZDRIFT]/_DRIFT_VEL;
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
-/* I */
-N: 1-1;
-t: _Tc*N;
-A1:expand(A0 + K.E.M30.(-_G))$
+
+Mrot1:read_matrix("MR1.csv", comma);
+Mrot2:read_matrix("MR2.csv", comma);
+Mrot3:read_matrix("MR3.csv", comma);
+Mrot4:read_matrix("MR4.csv", comma);
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
-/* II */
-N: 274-1;
-t: _Tc*N;
-A2:expand(A0 + K.E.(M(_DRIFT_AX, _DRIFT_VEL*t).M30).(M(_LAMBDA, _EARTHROT*t).(-_G)))$
-/* [wxMaxima: input   end   ] */
-
-/* [wxMaxima: input   start ] */
-/* III */
-A2:expand(A0 + K.E.(Mrot1.M(_DRIFT_AX, _DRIFT_VEL*_Tc*546).M30).(M(_LAMBDA, _EARTHROT*_Tc*598).(-_G)))$
-/* [wxMaxima: input   end   ] */
-
-/* [wxMaxima: input   start ] */
-/* IV */
-A2:expand(A0 + K.E.(Mrot2.M(_DRIFT_AX, _DRIFT_VEL*_Tc*222)
-.Mrot1.M(_DRIFT_AX, _DRIFT_VEL*_Tc*546).M30)
-.(M(_LAMBDA, _EARTHROT*_Tc*863).(-_G)))$
-/* [wxMaxima: input   end   ] */
-
-/* [wxMaxima: input   start ] */
-/* V */
-A2:expand(A0 + K.E.(Mrot3.M(_DRIFT_AX, _DRIFT_VEL*_Tc*1)
-.Mrot2.M(_DRIFT_AX, _DRIFT_VEL*_Tc*222)
-.Mrot1.M(_DRIFT_AX, _DRIFT_VEL*_Tc*546).M30)
-.(M(_LAMBDA, _EARTHROT*_Tc*953).(-_G)))$
-/* [wxMaxima: input   end   ] */
-
-/* [wxMaxima: input   start ] */
-/* VI */
-A2:expand(A0 + K.E.(Mrot4.M(_DRIFT_AX, _DRIFT_VEL*_Tc*142)
-.Mrot3.M(_DRIFT_AX, _DRIFT_VEL*_Tc*1)
-.Mrot2.M(_DRIFT_AX, _DRIFT_VEL*_Tc*222)
-.Mrot1.M(_DRIFT_AX, _DRIFT_VEL*_Tc*546).M30)
-.(M(_LAMBDA, _EARTHROT*_Tc*1325).(-_G)))$
-/* [wxMaxima: input   end   ] */
-
-/* [wxMaxima: input   start ] */
-Dsymb:PartDeriv(A)$
-/* [wxMaxima: input   end   ] */
-
-/* [wxMaxima: input   start ] */
-Dnum:subst([
+val:[
 Theta1 = 0.5*float(%pi)/180, Psi1 = 0,
 Theta3 = 0.5*float(%pi)/180, Psi3 = -float(%pi)/2,
 Nu1 = 0, Nu2 = 0,
 AngX = 0, AngZ = 0,
 K1 = 1, K2 = 1, K3 = 1,
 Shift1 = 0, Shift2 = 0, Shift3 = 0
-], Dsymb
-);
-/* [wxMaxima: input   end   ] */
-
-/* [wxMaxima: input   start ] */
-outG: subst([
-Theta1 = 0.5*float(%pi)/180, Psi1 = 0,
-Theta3 = 0.5*float(%pi)/180, Psi3 = -float(%pi)/2,
-Nu1 = 0, Nu2 = 0,
-AngX = 0, AngZ = 0,
-K1 = 1, K2 = 1, K3 = 1,
-Shift1 = 0, Shift2 = 0, Shift3 = 0
-], A
-);
-/* [wxMaxima: input   end   ] */
-
-/* [wxMaxima: input   start ] */
-stringout("dfull.txt", Dnum);
-stringout("outG.txt", outG);
-/* [wxMaxima: input   end   ] */
-
-/* [wxMaxima: input   start ] */
-Dnumerr:subst([
+];
+err:[
 Theta1 = (0.5 - 30/3600)*float(%pi)/180, Psi1 = -(30/3600)*float(%pi)/180,
 Theta3 = (0.5 - 30/3600)*float(%pi)/180, Psi3 = (-float(%pi)/2) - ((30/3600)*float(%pi)/180),
 Nu1 = (30/3600)*float(%pi)/180, Nu2 = (30/3600)*float(%pi)/180,
 AngX = float((25/3600)*%pi/180), AngZ = float((25/3600)*%pi/180),
 K1 = 1, K2 = 1, K3 = 1,
 Shift1 = 0, Shift2 = 0, Shift3 = 0
-], A
-);
+];
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
-Z: Dnumerr - outG;
+/* I */
+A1:expand(A0 + K.E.M30.(-_G))$
+D1:PartDeriv(A1)$
+outG1: subst(val, A1)$
+Dnum1: subst(err, D1)$
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
-x: [AngX, AngZ, Theta1, Psi1, Nu1, Nu2, Theta3, Psi3, K1, K2, K3, Shift1, Shift2, Shift3];
+/* II */
+A2:expand(A0 + K.E.(M(_DRIFT_AX, _DRIFT_VEL*_Tc*273).M30).(M(_LAMBDA, _EARTHROT*_Tc*273).(-_G)))$
+D2:PartDeriv(A2)$
+outG2: subst(val, A2)$
+Dnum2: subst(err, D2)$
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
-X: subst([
-Theta1 = -(30/3600)*float(%pi)/180, Psi1 = -(30/3600)*float(%pi)/180,
-Theta3 = -(30/3600)*float(%pi)/180, Psi3 = -(30/3600)*float(%pi)/180,
-Nu1 = (30/3600)*float(%pi)/180, Nu2 = (30/3600)*float(%pi)/180,
-AngX = float((25/3600)*%pi/180), AngZ = float((25/3600)*%pi/180),
-K1 = 0, K2 = 0, K3 = 0,
-Shift1 = 0, Shift2 = 0, Shift3 = 0
-], x
-);
+/* III */
+A3:expand(A0 + K.E.(Mrot1.M(_DRIFT_AX, _DRIFT_VEL*_Tc*546).M30).(M(_LAMBDA, _EARTHROT*_Tc*598).(-_G)))$
+D3:PartDeriv(A3)$
+outG3: subst(val, A3)$
+Dnum3: subst(err, D3)$
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
-Dnum.X;
+/* IV */
+A4:expand(A0 + K.E.(Mrot2.M(_DRIFT_AX, _DRIFT_VEL*_Tc*222)
+.Mrot1.M(_DRIFT_AX, _DRIFT_VEL*_Tc*546).M30)
+.(M(_LAMBDA, _EARTHROT*_Tc*863).(-_G)))$
+D4:PartDeriv(A4)$
+outG4: subst(val, A4)$
+Dnum4: subst(err, D4)$
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
-invert(transpose(Dnum).Dnum).transpose(Dnum).Z;
+/* V */
+A5:expand(A0 + K.E.(Mrot3.
+Mrot2.M(_DRIFT_AX, _DRIFT_VEL*_Tc*222)
+.Mrot1.M(_DRIFT_AX, _DRIFT_VEL*_Tc*546).M30)
+.(M(_LAMBDA, _EARTHROT*_Tc*953).(-_G)))$
+D5:PartDeriv(A5)$
+outG5: subst(val, A5)$
+Dnum5: subst(err, D5)$
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+/* VI */
+A6:expand(A0 + K.E.(Mrot4.M(_DRIFT_AX, _DRIFT_VEL*_Tc*189)
+.Mrot3
+.Mrot2.M(_DRIFT_AX, _DRIFT_VEL*_Tc*222)
+.Mrot1.M(_DRIFT_AX, _DRIFT_VEL*_Tc*546).M30)
+.(M(_LAMBDA, _EARTHROT*_Tc*1184).(-_G)))$
+D6:PartDeriv(A6)$
+outG6: subst(val, A6)$
+Dnum6: subst(err, D6)$
 /* [wxMaxima: input   end   ] */
 
 /* Maxima can't load/batch files which end with a comment! */
