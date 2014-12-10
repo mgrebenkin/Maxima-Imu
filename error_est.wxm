@@ -83,14 +83,9 @@ _LAMBDA: [cos(_LAT), sin(_LAT), 0];
 _G:matrix([0], [-9.8149760962], [0]);
 _EARTHROT: 7.292115003E-5;
 _Tc: 3.2768;
-_XDRIFT: (4.1177E-6)/(32*_Tc); _YDRIFT: (4.1177E-6)/(32*_Tc); _ZDRIFT: (4.1177E-6)/(32*_Tc);
+_XDRIFT: (4.1177E-4)/(32*_Tc); _YDRIFT: (4.1177E-4)/(32*_Tc); _ZDRIFT: (4.1177E-4)/(32*_Tc);
 _DRIFT_VEL: sqrt((_XDRIFT)^2 + (_YDRIFT)^2 + (_ZDRIFT)^2);
 _DRIFT_AX: [_XDRIFT, _YDRIFT, _ZDRIFT]/_DRIFT_VEL;
-/* [wxMaxima: input   end   ] */
-
-/* [wxMaxima: input   start ] */
-/*TEST!!!*/
-_DRIFT_VEL: 0;
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
@@ -129,7 +124,7 @@ Dnum1: subst(val, D1)$
 
 /* [wxMaxima: input   start ] */
 /* II */
-A2:expand(A0 + K.E.(M(_DRIFT_AX, _DRIFT_VEL*_Tc*273).M30).(M(_LAMBDA, _EARTHROT*_Tc*273).(-_G)))$
+A2:expand(A0 + K.E.(M(_DRIFT_AX, -_DRIFT_VEL*_Tc*273).M30).(M(_LAMBDA, _EARTHROT*_Tc*273).(-_G)))$
 D2:PartDeriv(A2)$
 outG2: subst(val, A2)$
 Dnum2: subst(val, D2)$
@@ -137,7 +132,7 @@ Dnum2: subst(val, D2)$
 
 /* [wxMaxima: input   start ] */
 /* III */
-A3:expand(A0 + K.E.(Mrot1.M(_DRIFT_AX, _DRIFT_VEL*_Tc*546).M30).(M(_LAMBDA, _EARTHROT*_Tc*598).(-_G)))$
+A3:expand(A0 + K.E.(Mrot1.M(_DRIFT_AX, -_DRIFT_VEL*_Tc*546).M30).(M(_LAMBDA, _EARTHROT*_Tc*597).(-_G)))$
 D3:PartDeriv(A3)$
 outG3: subst(val, A3)$
 Dnum3: subst(val, D3)$
@@ -145,9 +140,9 @@ Dnum3: subst(val, D3)$
 
 /* [wxMaxima: input   start ] */
 /* IV */
-A4:expand(A0 + K.E.(Mrot2.M(_DRIFT_AX, _DRIFT_VEL*_Tc*222)
-.Mrot1.M(_DRIFT_AX, _DRIFT_VEL*_Tc*546).M30)
-.(M(_LAMBDA, _EARTHROT*_Tc*863).(-_G)))$
+A4:expand(A0 + K.E.(Mrot2.M(_DRIFT_AX, -_DRIFT_VEL*_Tc*223)
+.Mrot1.M(_DRIFT_AX, -_DRIFT_VEL*_Tc*546).M30)
+.(M(_LAMBDA, _EARTHROT*_Tc*862).(-_G)))$
 D4:PartDeriv(A4)$
 outG4: subst(val, A4)$
 Dnum4: subst(val, D4)$
@@ -155,10 +150,10 @@ Dnum4: subst(val, D4)$
 
 /* [wxMaxima: input   start ] */
 /* V */
-A5:expand(A0 + K.E.(Mrot3.M(_DRIFT_AX, _DRIFT_VEL*_Tc*1)
-.Mrot2.M(_DRIFT_AX, _DRIFT_VEL*_Tc*222)
-.Mrot1.M(_DRIFT_AX, _DRIFT_VEL*_Tc*546).M30)
-.(M(_LAMBDA, _EARTHROT*_Tc*953).(-_G)))$
+A5:expand(A0 + K.E.(Mrot3.M(_DRIFT_AX, -_DRIFT_VEL*_Tc*1)
+.Mrot2.M(_DRIFT_AX, -_DRIFT_VEL*_Tc*223)
+.Mrot1.M(_DRIFT_AX, -_DRIFT_VEL*_Tc*546).M30)
+.(M(_LAMBDA, _EARTHROT*_Tc*952).(-_G)))$
 D5:PartDeriv(A5)$
 outG5: subst(val, A5)$
 Dnum5: subst(val, D5)$
@@ -166,11 +161,11 @@ Dnum5: subst(val, D5)$
 
 /* [wxMaxima: input   start ] */
 /* VI */
-A6:expand(A0 + K.E.(Mrot4.M(_DRIFT_AX, _DRIFT_VEL*_Tc*189)
-.Mrot3.M(_DRIFT_AX, _DRIFT_VEL*_Tc*1)
-.Mrot2.M(_DRIFT_AX, _DRIFT_VEL*_Tc*222)
-.Mrot1.M(_DRIFT_AX, _DRIFT_VEL*_Tc*546).M30)
-.(M(_LAMBDA, _EARTHROT*_Tc*1184).(-_G)))$
+A6:expand(A0 + K.E.(Mrot4.M(_DRIFT_AX, -_DRIFT_VEL*_Tc*142)
+.Mrot3.M(_DRIFT_AX, -_DRIFT_VEL*_Tc*1)
+.Mrot2.M(_DRIFT_AX, -_DRIFT_VEL*_Tc*223)
+.Mrot1.M(_DRIFT_AX, -_DRIFT_VEL*_Tc*546).M30)
+.(M(_LAMBDA, _EARTHROT*_Tc*1183).(-_G)))$
 D6:PartDeriv(A6)$
 outG6: subst(val, A6)$
 Dnum6: subst(val, D6)$
